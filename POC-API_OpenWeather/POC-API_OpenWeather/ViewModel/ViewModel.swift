@@ -13,7 +13,8 @@ class ViewModel: ObservableObject {
     
     func fetch() {
         
-        guard let endpoint = URL(string: "http://api.openweathermap.org/data/2.5/weather?q=Sao%20Paulo,BR&appid=abd0e5c0504faefe6611dba79cc38836&units=metric") else { return }
+        let apiKey = "abd0e5c0504faefe6611dba79cc38836&units=metric"
+        guard let endpoint = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=Sao%20Paulo,BR&appid=\(apiKey)") else { return }
         
         let request = URLRequest(url: endpoint)
         
