@@ -9,16 +9,18 @@ import Foundation
 internal import Combine
 
 class ViewModel: ObservableObject {
-    @Published var weather: [Weather] = []
+    static let shared = ViewModel()
     
-    func fetch() {
+    private init() { }
+    
+    func fetch(completion: @escaping (Result<WeatherModel, Error>) -> Void) {
         
         let apiKey = "abd0e5c0504faefe6611dba79cc38836&units=metric"
         guard let endpoint = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=Sao%20Paulo,BR&appid=\(apiKey)") else { return }
         
         let request = URLRequest(url: endpoint)
         
-        let task = URLSession.shared.dataTask(with: request) { [ weak self ] data, _, error in
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("Erro: \(error.localizedDescription)")
                 return
@@ -27,16 +29,12 @@ class ViewModel: ObservableObject {
             guard let data = data else { return }
             
             do {
-                let parsed = try JSONDecoder().decode(Weather.self, from: data)
-                
-                DispatchQueue.main.async {
-                    self?.weather = [parsed]
-                    
-                    print(parsed)
-                }
+                let parsed = try JSONDecoder().decode(WeatherModel.self, from: data)
+                completion(.success(parsed))
               
-            } catch {
-               print(error)
+            } catch(let error) {
+                print(error)
+                completion(.failure(error))
             }
         }
         task.resume()

@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct MainView: View {
-    var viewModel = ViewModel()
+    @StateObject private var weatherViewModel = WeatherViewModel()
     
     var body: some View {
         Button("Fetch with Async/Await") {
             Task {
-                viewModel.fetch()
+                weatherViewModel.fetchData()
             }
         }
     }

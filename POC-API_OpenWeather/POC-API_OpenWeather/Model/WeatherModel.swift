@@ -17,42 +17,41 @@ struct WeatherModel: Codable {
     var clouds: Clouds
     var dt: Int
     var sys: Sys
-    var timezone: Int
-    var id: Int
+    var timezone, id: Int
     var name: String
     var cod: Int
 }
 
 // MARK: - Coord
 struct Coord: Codable {
-    var long: Double
-    var lat: Double
+    var lon, lat: Double
 }
 
 // MARK: - Weather
 struct Weather: Codable {
     var id: Int
-    var main: String
-    var description: String
-    var icon: String
+    var main, description, icon: String
 }
 
 // MARK: - Main
 struct Main: Codable {
-    var temp: Double
-    var feels_like: Double
-    var temp_min: Double
-    var temp_max: Double
-    var pressure: Int
-    var humidity: Int
-    var sea_level: Int
-    var grnd_level: Int
+    let temp, feelsLike, tempMin, tempMax: Double
+    let pressure, humidity, seaLevel, grndLevel: Int
+
+    enum CodingKeys: String, CodingKey {
+        case temp
+        case feelsLike = "feels_like"
+        case tempMin = "temp_min"
+        case tempMax = "temp_max"
+        case pressure, humidity
+        case seaLevel = "sea_level"
+        case grndLevel = "grnd_level"
+    }
 }
 
 // MARK: - Wind
 struct Wind: Codable {
-    var speed: Double
-    var deg: Double
+    var speed, deg: Double
     var gust: Int
 }
 
@@ -66,7 +65,6 @@ struct Sys: Codable {
     var type: Int
     var id: UUID
     var country: String
-    var sunrise: Int
-    var sunset: Int
+    var sunrise, sunset: Int
 }
 
