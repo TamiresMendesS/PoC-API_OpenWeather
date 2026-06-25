@@ -27,10 +27,12 @@ class ViewModel: ObservableObject {
             guard let data = data else { return }
             
             do {
-                let parsed = try JSONDecoder().decode([Weather].self, from: data)
+                let parsed = try JSONDecoder().decode(Weather.self, from: data)
                 
                 DispatchQueue.main.async {
-                    self?.weather = parsed
+                    self?.weather = [parsed]
+                    
+                    print(parsed)
                 }
               
             } catch {
